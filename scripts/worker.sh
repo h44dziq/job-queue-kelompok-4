@@ -26,7 +26,28 @@ fi
 
 log_msg "mulai"
 
-sleep 15
+while true; do
+    FILE_JOB=$(ls "$PENDING_DIR" | grep '\.job$' | sort | head -n 1)
+    if [ -z "$FILE_JOB" ]; then
+        break
+    fi
+
+    ID_JOB="${FILE_JOB%.job}"
+    if ! mv "$PENDING_DIR/$FILE_JOB" "$RUNNING_DIR/$FILE_JOB"; then
+        log_msg "$ID_JOB galat (gagal dipindah ke running)"
+        exit 1
+    fi
+
+    JOB=$(grep '^JOB=' "$RUNNING_DIR/$FILE_JOB" | cut -d= -f2)
+    PARAM=$(grep '^PARAM=' "$RUNNING_DIR/$FILE_JOB" | cut -d= -f2)
+
+    echo "Menjalankan $ID_JOB"
+    log_msg "$ID_JOB berjalan"
+    bash "$JOBS_DIR/$JOB.sh" "$PARAM" > "$RUNNING_DIR/$ID_JOB.out" 2>&1
+
+    mv "$RUNNING_DIR/$FILE_JOB" "$RUNNING_DIR/$ID_JOB.out" "$DONE_DIR/"
+    log_msg "$ID_JOB selesai"
+done
 
 log_msg "selesai, antrean kosong"
 echo "Antrean kosong, worker berhenti."
