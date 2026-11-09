@@ -1,0 +1,9 @@
+#!/bin/bash
+
+trap '' TERM
+
+echo "Job mengabaikan SIGTERM"
+
+while true; do
+    sleep 1
+done
