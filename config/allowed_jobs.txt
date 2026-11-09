@@ -1,3 +1,3 @@
-job_ringan
-job_gagal
-job_lama
+job_ringan 1 30
+job_gagal 1 100
+job_lama 1 120
