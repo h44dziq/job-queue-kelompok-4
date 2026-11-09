@@ -4,7 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 ALLOWED_FILE="$PROJECT_DIR/config/allowed_jobs.txt"
 JOBS_DIR="$SCRIPT_DIR/jobs"
-QUEUE_DIR="/tmp/job-queue"
+QUEUE_DIR="/var/lib/job-queue"
 PENDING_DIR="$QUEUE_DIR/pending"
 LOG_FILE="$QUEUE_DIR/queue.log"
 MAX_PARAM_LEN=10
@@ -43,26 +43,28 @@ done < "$ALLOWED_FILE"
 if [ "$DIIZINKAN" -ne 1 ]; then
     echo "Ditolak: job '$NAMA_JOB' tidak diizinkan" >&2
     log_msg "$NAMA_JOB" "ditolak (job tidak diizinkan)"
-    exit 2
+    exit 3
 fi
 
 if [ ! -f "$JOBS_DIR/$NAMA_JOB.sh" ]; then
     echo "Ditolak: script job '$NAMA_JOB.sh' tidak ditemukan" >&2
     log_msg "$NAMA_JOB" "ditolak (script tidak ada)"
-    exit 2
+    exit 3
 fi
 
 if [[ ! "$PARAM" =~ ^[0-9]+$ ]]; then
     echo "Ditolak: parameter '$PARAM' harus berupa angka" >&2
     log_msg "$NAMA_JOB" "ditolak (parameter bukan angka)"
-    exit 2
+    exit 4
 fi
 
 if [ "${#PARAM}" -gt "$MAX_PARAM_LEN" ]; then
     echo "Ditolak: parameter terlalu panjang (maks $MAX_PARAM_LEN digit)" >&2
     log_msg "$NAMA_JOB" "ditolak (parameter terlalu panjang)"
-    exit 2
+    exit 4
 fi
+
+PARAM=$((10#$PARAM))
 
 TIMESTAMP="$(date '+%Y%m%d%H%M%S%N')"
 FILE_JOB="$PENDING_DIR/${TIMESTAMP}_${NAMA_JOB}.job"
