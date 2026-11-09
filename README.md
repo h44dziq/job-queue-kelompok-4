@@ -1,25 +1,22 @@
 # Sistem Antrean Pekerjaan dan Monitoring Proses Linux
 
-Proyek Akhir Sistem Operasi, pilihan 5B. Program Studi Sistem Informasi, UPN Veteran Jakarta, Semester Ganjil 2026/2027. Proyek ini dikerjakan berkelompok.
-
-Sebuah laboratorium perlu menjalankan pekerjaan komputasi sederhana secara berurutan. Sistem ini adalah antrean FIFO berbasis shell script untuk script dummy yang diizinkan. Pengguna mengajukan job, satu worker menjalankannya satu per satu dengan batas waktu, dan setiap job dicatat status, PID, serta exit status-nya. Akses dibatasi dengan user, group, dan permission Linux.
 
 ## Anggota
 
 | No | Nama | NIM | Tanggung jawab |
 |----|------|-----|----------------|
-| 1 | Muhammad Hadziq | ... | Pengajuan pekerjaan |
-| 2 | Arvin Maulana | ... | Antrean dan lock |
+| 1 | Muhammad Hadziq | 2510512031 | Pengajuan pekerjaan |
+| 2 | Arvin Maulana | 2510512021 | Antrean dan lock |
 | 3 | Radhitya | ... | Status dan exit status |
-| 4 | Erlang Yudantara | ... | Timeout dan penghentian |
-| 5 | Andika | ... | Monitoring, akses, laporan, dan Docker |
+| 4 | Erlang Yudantara | 2510512001 | Timeout dan penghentian |
+| 5 | Andika | 2510512016 | Monitoring, akses, laporan, dan Docker |
 
 ## Lingkungan
 
 | Komponen | Versi |
 |----------|-------|
 | OS | Ubuntu Server 22.04 LTS di VirtualBox |
-| VM | 2 CPU, RAM 2 GB, disk 20 GB |
+| VM | 3 CPU, RAM 3 GB, disk 15 GB |
 | Shell | bash 5.1 |
 | Docker | docker.io dari repository Ubuntu, image `alpine:3.20` |
 
@@ -56,7 +53,7 @@ sudo ./scripts/setup.sh
 
 ## Cara menjalankan
 
-Mengajukan job:
+Mengajukan job
 
 ```bash
 sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 5
@@ -162,7 +159,7 @@ sudo rm -rf /opt/job-queue /var/lib/job-queue && sudo userdel -r operator1 && su
 
 | Nama | Komponen | Skenario | Pull request |
 |------|----------|----------|--------------|
-| Muhammad Hadziq | `submit.sh`, `config/allowed_jobs.txt`, `scripts/jobs/`, README, rancangan, `kumpulkan-bukti.sh` | U1 | #1, #4 |
+| Muhammad Hadziq | `submit.sh`, `config/allowed_jobs.txt`, `scripts/jobs/`, | U1 | #1, #4 |
 | Arvin Maulana | `worker.sh` (lock dan FIFO) | U2 | #3 |
 | Radhitya | `status.sh`, pencatatan PID dan exit status di `worker.sh` | U3 | #8 |
 | Erlang Yudantara | `run_with_timeout.sh` | U4 | #6, #7 |
