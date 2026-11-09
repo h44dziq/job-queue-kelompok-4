@@ -1,3 +1,0 @@
-2026-11-09 08:03:47 | JOB=job_lama.sh | Tidak tercatat (PID wrapper: 17298) | TIMEOUT=3s | STATUS=TIMEOUT | EXIT=124
-2026-11-09 08:08:55 | JOB=job_ringan.sh | PID=17320 | TIMEOUT=10s | STATUS=SUCCESS | EXIT=0 | Pekerjaan berhasil diselesaikan
-2026-11-09 08:09:17 | JOB=job_lama.sh | PID=17331 | TIMEOUT=3s | STATUS=TIMEOUT | EXIT=124 | Dihentikan setelah SIGTERM
