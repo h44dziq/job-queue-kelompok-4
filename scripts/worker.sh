@@ -6,6 +6,7 @@ QUEUE_DIR="/var/lib/job-queue"
 PENDING_DIR="$QUEUE_DIR/pending"
 RUNNING_DIR="$QUEUE_DIR/running"
 DONE_DIR="$QUEUE_DIR/done"
+FAILED_DIR="$QUEUE_DIR/failed"
 LOCK_FILE="$QUEUE_DIR/worker.lock"
 LOG_FILE="$QUEUE_DIR/queue.log"
 
@@ -43,10 +44,21 @@ while true; do
 
     echo "Menjalankan $ID_JOB"
     log_msg "$ID_JOB berjalan"
-    bash "$JOBS_DIR/$JOB.sh" "$PARAM" > "$RUNNING_DIR/$ID_JOB.out" 2>&1
+    bash "$SCRIPT_DIR/run_with_timeout.sh" 10 "$JOBS_DIR/$JOB.sh" "$PARAM" > "$RUNNING_DIR/$ID_JOB.out" 2>&1
+    KODE=$?
+    PID_JOB=$(grep '^PID=' "$RUNNING_DIR/$ID_JOB.out" | tail -n 1 | cut -d= -f2)
 
-    mv "$RUNNING_DIR/$FILE_JOB" "$RUNNING_DIR/$ID_JOB.out" "$DONE_DIR/"
-    log_msg "$ID_JOB selesai"
+    if [ "$KODE" -eq 0 ]; then
+        STATUS="BERHASIL"
+        TUJUAN="$DONE_DIR"
+    else
+        STATUS="GAGAL"
+        TUJUAN="$FAILED_DIR"
+    fi
+
+    printf 'PID=%s\nEXIT=%s\nSTATUS=%s\n' "$PID_JOB" "$KODE" "$STATUS" >> "$RUNNING_DIR/$FILE_JOB"
+    mv "$RUNNING_DIR/$FILE_JOB" "$RUNNING_DIR/$ID_JOB.out" "$TUJUAN/"
+    log_msg "$ID_JOB $STATUS (PID $PID_JOB, exit $KODE)"
 done
 
 log_msg "selesai, antrean kosong"
