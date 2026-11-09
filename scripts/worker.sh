@@ -6,6 +6,7 @@ QUEUE_DIR="/var/lib/job-queue"
 PENDING_DIR="$QUEUE_DIR/pending"
 RUNNING_DIR="$QUEUE_DIR/running"
 DONE_DIR="$QUEUE_DIR/done"
+FAILED_DIR="$QUEUE_DIR/failed"
 LOCK_FILE="$QUEUE_DIR/worker.lock"
 LOG_FILE="$QUEUE_DIR/queue.log"
 
