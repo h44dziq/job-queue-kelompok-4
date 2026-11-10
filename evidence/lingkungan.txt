@@ -1,0 +1,40 @@
+== Lingkungan | 2026-11-10 02:31:04
+
+$ lsb_release -d
+Description:	Ubuntu 22.04.5 LTS
+exit=0
+
+$ uname -r
+5.15.0-202-generic
+exit=0
+
+$ nproc
+3
+exit=0
+
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       269Mi       943Mi       1.0Mi       750Mi       1.5Gi
+Swap:          2.0Gi          0B       2.0Gi
+exit=0
+
+$ bash -c echo "$BASH_VERSION"
+5.1.16(1)-release
+exit=0
+
+$ docker --version
+Docker version 29.1.3, build 29.1.3-0ubuntu3~22.04.2
+exit=0
+
+$ docker image ls alpine:3.20
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE         ID             DISK USAGE   CONTENT SIZE   EXTRA
+alpine:3.20   d9e853e87e55       12.2MB         3.71MB        
+exit=0
+
+$ id operator1 pengguna1 tamu1
+uid=1002(operator1) gid=1004(operator1) groups=1004(operator1),1002(jobqueue),1003(jobqueueop)
+uid=1003(pengguna1) gid=1005(pengguna1) groups=1005(pengguna1),1002(jobqueue)
+uid=1004(tamu1) gid=1006(tamu1) groups=1006(tamu1)
+exit=0
+

@@ -1,0 +1,61 @@
+== Monitoring CPU dan memori | 2026-11-10 03:47:59 | mhadziq
+
+-- Beban job_ringan 3 detik
+$ uptime
+ 03:47:59 up  4:08,  3 users,  load average: 0.67, 0.14, 0.04
+exit=0
+
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 3
+Job diterima: 20261110034759453200231_job_ringan (parameter 3)
+exit=0
+
+$ /opt/job-queue/scripts/monitor.sh 2
+== 03:48:00 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3224    3223 operato+ R    95.0  0.0  1452       00:01 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 3
+== 03:48:01 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3224    3223 operato+ R    98.0  0.0  1452       00:02 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 3
+exit=0
+
+$ uptime
+ 03:48:02 up  4:08,  3 users,  load average: 0.70, 0.16, 0.05
+exit=0
+
+-- Beban job_ringan 8 detik
+$ uptime
+ 03:48:02 up  4:08,  3 users,  load average: 0.70, 0.16, 0.05
+exit=0
+
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 8
+Job diterima: 20261110034802700698915_job_ringan (parameter 8)
+exit=0
+
+$ /opt/job-queue/scripts/monitor.sh 7
+== 03:48:03 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    88.0  0.0  1456       00:01 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:04 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    94.5  0.0  1456       00:02 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:05 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    96.6  0.0  1456       00:03 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:06 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    98.0  0.0  1456       00:04 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:07 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    98.6  0.0  1456       00:05 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:08 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    99.1  0.0  1456       00:06 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+== 03:48:09 ==
+    PID    PPID USER     STAT %CPU %MEM   RSS     ELAPSED COMMAND
+   3293    3292 operato+ R    99.4  0.0  1456       00:07 /bin/bash /opt/job-queue/scripts/jobs/job_ringan.sh 8
+exit=0
+
+$ uptime
+ 03:48:10 up  4:08,  3 users,  load average: 0.72, 0.17, 0.05
+exit=0
+

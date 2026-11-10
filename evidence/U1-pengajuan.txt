@@ -1,0 +1,24 @@
+== U1 Pengajuan pekerjaan | 2026-11-10 02:31:05 | mhadziq
+
+-- Positif
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 5
+Job diterima: 20261110023105152928283_job_ringan (parameter 5)
+exit=0
+
+$ ls /var/lib/job-queue/pending
+20261110023105152928283_job_ringan.job
+exit=0
+
+-- Negatif
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh rm 5
+Ditolak: job 'rm' tidak diizinkan
+exit=3
+
+$ ls /var/lib/job-queue/pending
+20261110023105152928283_job_ringan.job
+exit=0
+
+$ potongan queue.log
+2026-11-10 02:31:05 | PID=2415 | pengguna1 | job_ringan | menunggu (20261110023105152928283_job_ringan)
+2026-11-10 02:31:05 | PID=2426 | pengguna1 | rm | ditolak (job 'rm' tidak diizinkan)
+
