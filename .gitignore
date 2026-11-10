@@ -1,0 +1,14 @@
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.vscode/
+
+*.key
+*.pem
+id_rsa*
+.env
+
+*.vdi
+*.vmdk
+*.ova

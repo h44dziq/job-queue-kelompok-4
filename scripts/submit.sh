@@ -9,6 +9,8 @@ PENDING_DIR="$QUEUE_DIR/pending"
 LOG_FILE="$QUEUE_DIR/queue.log"
 PENGAJU="$(id -un)"
 
+umask 007
+
 log_msg() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') | PID=$$ | $PENGAJU | $1 | $2" >> "$LOG_FILE" 2>/dev/null
 }

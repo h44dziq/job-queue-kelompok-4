@@ -1,5 +1,8 @@
 # Sistem Antrean Pekerjaan dan Monitoring Proses Linux
 
+Proyek Akhir Sistem Operasi, pilihan 5B. Program Studi Sistem Informasi, UPN Veteran Jakarta, Semester Ganjil 2026/2027. Proyek ini dikerjakan berkelompok.
+
+Sebuah laboratorium perlu menjalankan pekerjaan komputasi sederhana secara berurutan. Sistem ini adalah antrean FIFO berbasis shell script untuk script dummy yang diizinkan. Pengguna mengajukan job, satu worker menjalankannya satu per satu dengan batas waktu, dan setiap job dicatat status, PID, serta exit status-nya. Akses dibatasi dengan user, group, dan permission Linux.
 
 ## Anggota
 
@@ -16,9 +19,9 @@
 | Komponen | Versi |
 |----------|-------|
 | OS | Ubuntu Server 22.04 LTS di VirtualBox |
-| VM | 3 CPU, RAM 3 GB, disk 15 GB |
-| Shell | bash 5.1 |
-| Docker | docker.io dari repository Ubuntu, image `alpine:3.20` |
+| VM | 3 CPU, RAM 2 GB, partisi root 11 GB |
+| Shell | bash 5.1.16 |
+| Docker | docker.io 29.1.3 dari repository Ubuntu, image `alpine:3.20` |
 
 Hasil pemeriksaan lengkap ada di `evidence/lingkungan.txt`.
 
@@ -28,9 +31,9 @@ Hasil pemeriksaan lengkap ada di `evidence/lingkungan.txt`.
 scripts/        submit.sh, worker.sh, run_with_timeout.sh, status.sh, monitor.sh, laporan.sh, setup.sh
 scripts/jobs/   job dummy yang diizinkan: job_ringan, job_gagal, job_lama
 config/         daftar job yang diizinkan beserta rentang parameternya
-tests/          skenario uji per anggota dan kumpulkan-bukti.sh
+tests/          matriks skenario uji per anggota
 evidence/       hasil uji dari VM
-docs/           rancangan sistem dan analisis konsep
+docs/           rancangan sistem
 ```
 
 Rancangan lengkap (alur, struktur direktori, matriks akses, exit status) ada di `docs/rancangan.md`.
@@ -53,7 +56,7 @@ sudo ./scripts/setup.sh
 
 ## Cara menjalankan
 
-Mengajukan job
+Mengajukan job:
 
 ```bash
 sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 5
@@ -95,15 +98,11 @@ sudo -u operator1 /opt/job-queue/scripts/laporan.sh
 
 ## Pengujian
 
-```bash
-sudo ./tests/kumpulkan-bukti.sh
-```
-
-Semua skenario dijalankan dan hasilnya disimpan ke `evidence/`. Matriks skenario ada di `tests/README.md`.
+Skenario positif dan negatif tiap anggota, beserta hasil yang diharapkan, ada di `tests/README.md`. Perintah dan keluaran asli dari mesin virtual tersimpan di `evidence/`.
 
 ## Aktivitas Docker
 
-Container membaca laporan dari host melalui bind mount read-only. Hanya folder `output/` yang di-mount.
+Container membaca laporan dari host melalui bind mount read-only. Hanya folder `output/` yang di-mount. Tambahkan `sudo` di depan perintah `docker` jika akun belum diizinkan menjalankan Docker.
 
 ```bash
 docker pull alpine:3.20
@@ -159,7 +158,7 @@ sudo rm -rf /opt/job-queue /var/lib/job-queue && sudo userdel -r operator1 && su
 
 | Nama | Komponen | Skenario | Pull request |
 |------|----------|----------|--------------|
-| Muhammad Hadziq | `submit.sh`, `config/allowed_jobs.txt`, `scripts/jobs/`, | U1 | #1, #4 |
+| Muhammad Hadziq | `submit.sh`, `config/allowed_jobs.txt`, `scripts/jobs/`, README, rancangan | U1 | #1, #4 |
 | Arvin Maulana | `worker.sh` (lock dan FIFO) | U2 | #3 |
 | Radhitya | `status.sh`, pencatatan PID dan exit status di `worker.sh` | U3 | #8 |
 | Erlang Yudantara | `run_with_timeout.sh` | U4 | #6, #7 |
