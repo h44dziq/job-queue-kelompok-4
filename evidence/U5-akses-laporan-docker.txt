@@ -1,0 +1,48 @@
+== U5 Akses, laporan, dan Docker | 2026-11-10 02:31:25 | mhadziq
+
+-- Pembatasan akses
+$ sudo -u tamu1 /opt/job-queue/scripts/submit.sh job_ringan 1
+Ditolak: akses ditolak, tamu1 tidak berhak mengajukan job
+exit=5
+
+-- Laporan
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 1
+Job diterima: 20261110023126033985018_job_ringan (parameter 1)
+exit=0
+
+$ sudo -u operator1 /opt/job-queue/scripts/worker.sh
+Menjalankan 20261110023126033985018_job_ringan
+Antrean kosong, worker berhenti.
+exit=0
+
+$ sudo -u operator1 /opt/job-queue/scripts/laporan.sh
+Laporan dibuat: /var/lib/job-queue/output/laporan.txt
+exit=0
+
+-- Docker positif
+$ docker run --rm --mount type=bind,src=/var/lib/job-queue/output,dst=/data,readonly alpine:3.20 cat /data/laporan.txt
+LAPORAN ANTREAN PEKERJAAN
+Dibuat: 2026-11-10 02:31:27 oleh operator1
+
+MENUNGGU : 0
+BERJALAN : 0
+BERHASIL : 1
+GAGAL    : 0
+
+ID_JOB                               STATUS    PID      EXIT  PENGAJU
+20261110023126033985018_job_ringan   BERHASIL  2932     0     pengguna1
+exit=0
+
+-- Docker negatif
+$ sha256sum /var/lib/job-queue/output/laporan.txt
+7d582221870e8045285fc79fc5c703166518e8aaa9be0375b53167c7fc057317  /var/lib/job-queue/output/laporan.txt
+exit=0
+
+$ docker run --rm --mount type=bind,src=/var/lib/job-queue/output,dst=/data,readonly alpine:3.20 sh -c echo "uji perubahan" >> /data/laporan.txt
+sh: can't create /data/laporan.txt: Read-only file system
+exit=1
+
+$ sha256sum /var/lib/job-queue/output/laporan.txt
+7d582221870e8045285fc79fc5c703166518e8aaa9be0375b53167c7fc057317  /var/lib/job-queue/output/laporan.txt
+exit=0
+

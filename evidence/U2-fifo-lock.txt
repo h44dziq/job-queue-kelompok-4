@@ -1,0 +1,58 @@
+== U2 Antrean FIFO dan lock worker | 2026-11-10 02:31:05 | mhadziq
+
+-- Positif
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_ringan 1
+Job diterima: 20261110023105383078098_job_ringan (parameter 1)
+exit=0
+
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_gagal 2
+Job diterima: 20261110023105474644726_job_gagal (parameter 2)
+exit=0
+
+$ sudo -u operator1 /opt/job-queue/scripts/worker.sh
+Menjalankan 20261110023105383078098_job_ringan
+Menjalankan 20261110023105474644726_job_gagal
+Antrean kosong, worker berhenti.
+exit=0
+
+$ potongan queue.log
+2026-11-10 02:31:05 | PID=2442 | pengguna1 | job_ringan | menunggu (20261110023105383078098_job_ringan)
+2026-11-10 02:31:05 | PID=2452 | pengguna1 | job_gagal | menunggu (20261110023105474644726_job_gagal)
+2026-11-10 02:31:05 | PID=2462 | operator1 | worker | mulai
+2026-11-10 02:31:05 | PID=2462 | operator1 | worker | 20261110023105383078098_job_ringan berjalan
+2026-11-10 02:31:06 | PID=2486 | operator1 | job_ringan | selesai sebelum batas waktu 10s (exit 0)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105383078098_job_ringan BERHASIL (PID 2486, exit 0)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105474644726_job_gagal berjalan
+2026-11-10 02:31:06 | PID=2517 | operator1 | job_gagal | selesai sebelum batas waktu 10s (exit 2)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105474644726_job_gagal GAGAL (PID 2517, exit 2)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | selesai, antrean kosong
+
+-- Negatif
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_lama 5
+Job diterima: 20261110023106123050313_job_lama (parameter 5)
+exit=0
+
+$ sudo -u operator1 /opt/job-queue/scripts/worker.sh &
+$ sudo -u operator1 /opt/job-queue/scripts/worker.sh
+Ditolak: worker lain sedang berjalan
+exit=6
+
+$ potongan queue.log
+2026-11-10 02:31:05 | PID=2442 | pengguna1 | job_ringan | menunggu (20261110023105383078098_job_ringan)
+2026-11-10 02:31:05 | PID=2452 | pengguna1 | job_gagal | menunggu (20261110023105474644726_job_gagal)
+2026-11-10 02:31:05 | PID=2462 | operator1 | worker | mulai
+2026-11-10 02:31:05 | PID=2462 | operator1 | worker | 20261110023105383078098_job_ringan berjalan
+2026-11-10 02:31:06 | PID=2486 | operator1 | job_ringan | selesai sebelum batas waktu 10s (exit 0)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105383078098_job_ringan BERHASIL (PID 2486, exit 0)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105474644726_job_gagal berjalan
+2026-11-10 02:31:06 | PID=2517 | operator1 | job_gagal | selesai sebelum batas waktu 10s (exit 2)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | 20261110023105474644726_job_gagal GAGAL (PID 2517, exit 2)
+2026-11-10 02:31:06 | PID=2462 | operator1 | worker | selesai, antrean kosong
+2026-11-10 02:31:06 | PID=2540 | pengguna1 | job_lama | menunggu (20261110023106123050313_job_lama)
+2026-11-10 02:31:06 | PID=2551 | operator1 | worker | mulai
+2026-11-10 02:31:06 | PID=2551 | operator1 | worker | 20261110023106123050313_job_lama berjalan
+2026-11-10 02:31:07 | PID=2579 | operator1 | worker | ditolak (worker lain sedang berjalan)
+2026-11-10 02:31:11 | PID=2575 | operator1 | job_lama | selesai sebelum batas waktu 10s (exit 0)
+2026-11-10 02:31:11 | PID=2551 | operator1 | worker | 20261110023106123050313_job_lama BERHASIL (PID 2575, exit 0)
+2026-11-10 02:31:11 | PID=2551 | operator1 | worker | selesai, antrean kosong
+

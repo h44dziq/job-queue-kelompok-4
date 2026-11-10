@@ -1,0 +1,42 @@
+== U4 Timeout dan penghentian | 2026-11-10 02:31:12 | mhadziq
+
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_lama 3
+Job diterima: 20261110023112308660017_job_lama (parameter 3)
+exit=0
+
+$ sudo -u pengguna1 /opt/job-queue/scripts/submit.sh job_lama 20
+Job diterima: 20261110023112387690542_job_lama (parameter 20)
+exit=0
+
+$ date +%T
+02:31:12
+
+$ sudo -u operator1 /opt/job-queue/scripts/worker.sh
+Menjalankan 20261110023112308660017_job_lama
+Menjalankan 20261110023112387690542_job_lama
+Antrean kosong, worker berhenti.
+exit=0
+
+$ date +%T
+02:31:25
+
+-- Positif: job_lama 3 selesai sebelum batas 10 detik
+-- Negatif: job_lama 20 dihentikan setelah 10 detik
+$ sudo -u pengguna1 /opt/job-queue/scripts/status.sh
+ID_JOB                               STATUS     PID      EXIT
+20261110023112308660017_job_lama     BERHASIL   2797     0
+20261110023112387690542_job_lama     GAGAL      2829     124
+exit=0
+
+$ potongan queue.log
+2026-11-10 02:31:12 | PID=2752 | pengguna1 | job_lama | menunggu (20261110023112308660017_job_lama)
+2026-11-10 02:31:12 | PID=2762 | pengguna1 | job_lama | menunggu (20261110023112387690542_job_lama)
+2026-11-10 02:31:12 | PID=2773 | operator1 | worker | mulai
+2026-11-10 02:31:12 | PID=2773 | operator1 | worker | 20261110023112308660017_job_lama berjalan
+2026-11-10 02:31:15 | PID=2797 | operator1 | job_lama | selesai sebelum batas waktu 10s (exit 0)
+2026-11-10 02:31:15 | PID=2773 | operator1 | worker | 20261110023112308660017_job_lama BERHASIL (PID 2797, exit 0)
+2026-11-10 02:31:15 | PID=2773 | operator1 | worker | 20261110023112387690542_job_lama berjalan
+2026-11-10 02:31:25 | PID=2829 | operator1 | job_lama | timeout 10s, dihentikan dengan SIGTERM (exit 124)
+2026-11-10 02:31:25 | PID=2773 | operator1 | worker | 20261110023112387690542_job_lama GAGAL (PID 2829, exit 124)
+2026-11-10 02:31:25 | PID=2773 | operator1 | worker | selesai, antrean kosong
+
