@@ -10,7 +10,7 @@ Sebuah laboratorium perlu menjalankan pekerjaan komputasi sederhana secara berur
 |----|------|-----|----------------|
 | 1 | Muhammad Hadziq | 2510512031 | Pengajuan pekerjaan |
 | 2 | Arvin Maulana | 2510512021 | Antrean dan lock |
-| 3 | Radhitya | ... | Status dan exit status |
+| 3 | Radhitya | 2510512022 | Status dan exit status |
 | 4 | Erlang Yudantara | 2510512001 | Timeout dan penghentian |
 | 5 | Andika | 2510512016 | Monitoring, akses, laporan, dan Docker |
 
