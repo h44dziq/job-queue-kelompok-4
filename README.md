@@ -1,7 +1,8 @@
 # Sistem Antrean Pekerjaan dan Monitoring Proses Linux
 
-Proyek Akhir Sistem Operasi, pilihan 5B. Program Studi Sistem Informasi, UPN Veteran Jakarta, Semester Ganjil 2026/2027. Proyek ini dikerjakan berkelompok.
+Proyek Akhir Sistem Operasi, pilihan 5B. Program Studi Sistem Informasi, UPN Veteran Jakarta, Semester Ganjil 2026/2027. 
 
+Case:
 Sebuah laboratorium perlu menjalankan pekerjaan komputasi sederhana secara berurutan. Sistem ini adalah antrean FIFO berbasis shell script untuk script dummy yang diizinkan. Pengguna mengajukan job, satu worker menjalankannya satu per satu dengan batas waktu, dan setiap job dicatat status, PID, serta exit status-nya. Akses dibatasi dengan user, group, dan permission Linux.
 
 ## Anggota
